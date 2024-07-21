@@ -18,13 +18,22 @@ var reduce = output.reduce((acc, curr) => {
 // console.log(reduce);
 
 
-var reduce = [{ double: 1 }, { double: 11 }, { double: 9 }, { double: 8 }].reduce((acc, curr) => {
-    if (acc.double <= curr.double) {
-        acc.min = acc.double
-    }
-    else {
+var reduce = [{ double: -1 }, { double: 11 }, { double: 9 }, { double: -10 }].reduce((acc, curr) => {
+    // min
+    if (acc.min == undefined) {
         acc.min = curr.double;
     }
-    return acc;
-})
+    else {
+        acc.min = acc.min > curr.double ? curr.double : acc.min;
+    }
+
+    // max 
+    if (acc.max == undefined) {
+        acc.max = curr.double;
+    }
+    else {
+        acc.max = acc.max < curr.double ? curr.double : acc.max;
+    }
+    return acc
+}, {})
 console.log(reduce);
