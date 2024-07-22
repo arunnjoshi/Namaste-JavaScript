@@ -1,3 +1,9 @@
+$(document).ajaxStart(function () {
+    console.log('show loading....');
+}).ajaxStop(function () {
+    console.log('hide loading....');
+});
+
 function getData() {
     return $.ajax({
         url: 'https://jsonplaceholder.typicode.com/posts',
@@ -5,21 +11,30 @@ function getData() {
         dataType: 'json',
     });
 }
+
+function getDataById(postId) {
+    return $.ajax({
+        url: `https://jsonplaceholder.typicode.com/posts/${postId}`,
+        type: 'GET',
+        dataType: 'json',
+    });
+}
+
 let setTimer1 = new Promise((resolve, reject) => {
     setTimeout(() => {
-        resolve('set timer resolve 4 seconds');
-    }, 4000);
+        resolve('set timer resolve 1 seconds');
+    }, 1000);
 });
 
 let setTimer2 = new Promise((resolve, reject) => {
     setTimeout(() => {
-        resolve('set timer resolve 10 seconds');
-    }, 10000);
+        resolve('set timer resolve 4 seconds');
+    }, 2000);
 });
 // promises chaining 
 var dataPromise = getData();
 dataPromise.then((data) => {
-    console.log('Data fetched successfully:', data);
+    // console.log('Data fetched successfully:', data);
     data.forEach(post => {
         $('body').append(`<p>${post.title}</p>`);
     });
@@ -35,15 +50,17 @@ dataPromise.then((data) => {
 // async await 
 async function printData() {
     let data = await getData();
-    console.log(data);
-    data.forEach(post => {
-        $('body').append(`<p>${post.title}</p>`);
-    });
-    var res1 = await setTimer1;
-    console.log(res1);
-    var res2 = await setTimer2;
-    console.log(res2);
+    // console.log(data);
 
+    // var res1 = await setTimer1;
+    // console.log(res1);
+    // var res2 = await setTimer2;
+    // console.log(res2);
+    var post = await getDataById(data[99].id);
+    // post.forEach(post => {
+    $('body').html(`<p>${post.title}</p>`);
+    // });
+    // console.log(post);
 }
 
 printData();
